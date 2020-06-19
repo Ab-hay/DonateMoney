@@ -1,0 +1,59 @@
+AWSTemplateFormatVersion : '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: burnmoney.io
+
+Parameters:
+  S3BucketNameWebsite:
+    Description: Bucket name for static website
+    Type: String
+  DatabasePassword:
+    Description: Password for RDS
+    Type: String
+
+#lambda functions
+Resources:
+  getLeaderBoard:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: index.getLeaderBoard 
+      Role: !GetAtt [ DefaultLambdaRole, Arn ]
+      Runtime: nodejs8.10
+      CodeUri: serverless/getData/
+      Environment:
+      Events:
+        GetResource:
+          Type: Api
+          Properties:
+            Path: /leaderdata
+            Method: get
+
+  addNewBurn:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: index.addNewBurnRecord
+      Role: !GetAtt [ DefaultLambdaRole, Arn, LambdaExecutionRole.Arn ]
+      Runtime: nodejs8.10
+      CodeUri: serverless/getData/
+      MemorySize: 2048
+      Timeout: 150
+      Events:
+        GetResource:
+          Type: Api
+          Properties:
+            Path: /newburn
+            Method: post
+
+  getAllValidTransactions:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: index.getAllValidTransactions 
+      Role: !GetAtt [ DefaultLambdaRole, Arn ]
+      Runtime: nodejs8.10
+      CodeUri: serverless/getData/
+      Environment:
+      Events:
+        GetResource:
+          Type: Api
+          Properties:
+            Path: /transactions
+            Method: get

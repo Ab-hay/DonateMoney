@@ -1,0 +1,10 @@
+- Padding for navbar to be less on the bottom
+DONE: Make the GIF come closer to the left side
+DONE: Modal needs to have better padding/margin or something
+DONE: Leaderboard design
+- Design for "how" page
+- Top burners button needs to open something
+- table in leaderboard could look better
+- color design within leaderboard might not actually look the best
+- getting actual data from ddb
+- Padding for NOW button needs to be fixed such that left side doesn't look so bloated

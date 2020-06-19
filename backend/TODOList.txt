@@ -1,0 +1,22 @@
+DONE: Test to see if the event is being emitted correctly
+       --> second topic is the address of the sender
+       --> third topic is hex value of wei value of eth sent
+DONE: keepalive the websocket connection for infura
+DONE: redo the ddb table design to be
+    --> wallet_address, name, advertisement, created_at, total_burned
+DONE: test connection with ddb and the methods for ddb
+- Idempotency for events
+DONE: Currently getting double update for a single event. Need fixing
+    - was because was using callback function AND a promise()
+- think about all the fail scenarios that could happen
+    - events not being processed; server goes down for a time being or something
+    - duplicate events
+        - race condition
+        DONE: idempotency idea (if settled, do nothing)
+    - sequential ordering of events and their subsequent ordering (lets not
+      worry about this rn)
+    - Handle the case in which pending transaction doesn't exist (logs say pending
+    txn handled successfully but we see error in the actual ddb thing)
+DONE: Uppercase the request including 0x for the key
+DONE: Websocket still disconnects
+DONE: Total burned by day for ddb table
