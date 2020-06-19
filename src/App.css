@@ -64,12 +64,11 @@
 
 .master-div { 
   background-color: #252A34;
-  overflow: hidden;
+  overflow: auto;
 }
 
 .master-div-how {
-  height: 20vh;
-  overflow: hidden;
+  overflow: auto;
 }
 
 .h1center { 
@@ -258,12 +257,6 @@ height:200px;
   transform: translate(0px,-75px);
 }
 
-.grad {
-  background-image: linear-gradient(#FE4204,#FF8A07);
-  padding-right: 0%;
-  overflow: visible;
-}
-
 .width-50{
   width: 25%;
   margin: auto;
@@ -396,7 +389,7 @@ height:200px;
   min-height: 100vh;
   max-height: 100vh;
   background-color: #252A34;
-  overflow: hidden;
+  overflow: auto;
 }
 
 .landing-buttonTwo {

@@ -1,2 +1,4 @@
-import createBrowserHistory from 'history/createBrowserHistory';
-export default createBrowserHistory();
+import { createBrowserHistory } from 'history';
+let history = createBrowserHistory();
+
+export default history;

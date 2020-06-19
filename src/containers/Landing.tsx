@@ -1,5 +1,6 @@
 import * as React from 'react';
 import BurnMoney from '../components/BurnMoney'
+import Register from '../components/Register'
 
 import burnLogo from '../images/burnfinal.gif';
 import burnLogoAngel from '../images/happyBurn.gif';
@@ -98,13 +99,11 @@ export default class Landing extends React.Component<any, any> {
           </div>
         </Grid>
         <Grid container direction="row" alignItems="center" alignContent="center" justify="center" >
-          <Grid item spacing={0} direction="row">
+          <Grid item spacing={0} >
             <img className="landing-pic" src={burnLogoAngel} alt=""/>
           </Grid>
-          <Grid item spacing ={0} direction="row" alignContent="center" justify="center"  alignItems="center">
-              <AwesomeButton className="landing-buttonTwo" onPress>
-                REGISTER
-              </AwesomeButton>
+          <Grid item>
+              <Register></Register>
           </Grid>
         </Grid>
       </div>
