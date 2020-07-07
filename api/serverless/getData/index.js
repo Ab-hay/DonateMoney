@@ -8,8 +8,10 @@ AWS.config.update({accessKeyId: config.config.accessKeyId , secretAccessKey: con
 vogels.dynamoDriver(new vogels.AWS.DynamoDB({ endpoint: "https://dynamodb.us-east-2.amazonaws.com" }));
 
 
-const BURNER_TABLE_NAME = "BurnerRecords";
+const DONATE_TABLE_NAME = "DonateRecords";
 const BURNER_TABLE_TRANSACTIONS ="PendingTranactions";
+const CHARITY_ADDRESS_TABLE = "CharityAddress";
+const CHARITY_METADATA = "CharityMetadata";
 const header = {
   'Access-Control-Allow-Methods': 'DELETE,GET,HEAD,OPTIONS,PATCH,POST,PUT',
   'Access-Control-Allow-Origin': '*',
@@ -22,7 +24,7 @@ const response = {
     statusCode: "ok",
   }),
 };
-
+// Table Definations
 const BurnerModel = vogels.define('BurnerModel', {
   hashKey : 'pubkey',
   schema : {
@@ -31,7 +33,7 @@ const BurnerModel = vogels.define('BurnerModel', {
     advertisement: Joi.string().required(),
     totalBurntAmount: Joi.number().required()
   },
-  tableName: BURNER_TABLE_NAME
+  tableName: DONATE_TABLE_NAME
 });
 
 const BurnerTransactionModel = vogels.define('BurnerTransactionModel',{
@@ -45,6 +47,29 @@ const BurnerTransactionModel = vogels.define('BurnerTransactionModel',{
     burnerName: Joi.string().max(42)
   },
   tableName: BURNER_TABLE_TRANSACTIONS
+});
+
+const CharityAddressModel = vogels.define('CharityAddressModel',{
+  hashKey : 'charity_name',
+  schema: {
+    charity_name: Joi.string().min(8).max(36, 'utf-8').required(),
+    monero_address: Joi.string(),
+    eth_address: Joi.string().min(40).max(42, 'utf-8'),
+  },
+  tableItems: CHARITY_ADDRESS_TABLE
+});
+
+const CharityMetadataModel = vogels.define('CharityMetadataModel',{
+  hashKey : 'charity_name',
+  schenma : {
+    charity_name: Joi.string().min(8).max(36, 'utf-8').required(),
+    email: Joi.string(),
+    website: Joi.string().max(42, 'utf-8'),
+    instagram: Joi.string(),
+    discription: Joi.string(),
+    phone_number: Joi.string().max(10, 'utf-8').required(),
+  },
+  tableName: CHARITY_METADATA
 });
 
 exports.addNewBurnRecord = async (event, context, callback) => {
@@ -117,6 +142,35 @@ function getTableItemsTransactions() {
 function createRecord(param) {
   return new Promise(function(resolve, reject) {
       BurnerTransactionModel.create(param, function(err, data) {
+          if (err !== null) reject(err);
+          else resolve(data);
+      });
+  });
+}
+  
+exports.registercharity = async (event, context, callback) => {
+  const requestData = JSON.parse(event.body);
+  try {
+    await createRecord({address: requestData.address.toUpperCase(), advertisement: requestData.advertisement, settled: false, txn_hash: requestData.txn_hash, burnerName: requestData.name, timeStamp: Date.now()})
+  return response;
+  } catch (err) {
+    callback(err, null);
+    return;
+  }
+};
+
+function createRecordCharityAddress(param) {
+  return new Promise(function(resolve, reject) {
+      CharityAddressModel.create(param, function(err, data) {
+          if (err !== null) reject(err);
+          else resolve(data);
+      });
+  });
+}
+
+function createRecordCharityMetadata(param) {
+  return new Promise(function(resolve, reject) {
+      CharityMetadataModel.create(param, function(err, data) {
           if (err !== null) reject(err);
           else resolve(data);
       });
